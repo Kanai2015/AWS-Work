@@ -1,0 +1,45 @@
+---
+Parameters:
+  SSHKey:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of an existing keypai to enable SSH access
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1b
+      InstanceType: t2.micro
+      ImageId: ami-08f3d892de259504d
+      KeyName: !Ref SSHKey 
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+      UserData: 
+        Fn::Base64: |
+           #!/bin/bash
+           sudo su 
+           yum update -y 
+           yum install -y httpd
+           systemctl start httpd
+           systemctl enable httpd
+           echo "DitiPriya Dutta to say hello to all of you " > /var/www/html/index.html
+           
+   
+   #an Elastic IP for instance
+  MyEIP: 
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref MyInstance 
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup 
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+         - CidrIp: 0.0.0.0/0
+           FromPort: 22
+           IpProtocol: tcp
+           ToPort: 22
+         - CidrIp: 0.0.0.0/0
+           FromPort: 80
+           IpProtocol: tcp
+           ToPort: 80
+           
