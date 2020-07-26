@@ -1,0 +1,99 @@
+---
+Parameters:
+  SSHKey:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of an existing keypai to enable SSH access
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1b
+      InstanceType: t2.micro
+      ImageId: ami-08f3d892de259504d
+      KeyName: !Ref SSHKey 
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+      UserData: 
+        Fn::Base64: 
+          !Sub |
+             #!/bin/bash
+             # Get latest Cloud formation Package
+             yum update -y aws-cfn-bootstrap
+             # Start cfn-init
+             /opt/aws/bin/cfn-init -s ${AWS::StackId} -r MyInstance --region ${AWS::Region} ||
+             error_exit 'failed to run CFN-init' 
+             # start cfn-signal to wait condition
+             # ? indicates if above statement work then sends good signal else bad signal to wait condition
+             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource Samplewaitcond --region ${AWS::Region}
+    Metadata:
+      'AWS::CloudFormation::Init':               
+         config:
+           packages:
+             yum:
+               httpd: []
+           files:
+             "/var/www/html/index.html":
+                content: |
+                  <!DOCTYPE html>
+                  <html>
+                     <head>
+                        <title>
+                            Print Current day and time
+                        </title>
+                     </head>
+                     <body>
+                        <script  type="text/javascript">
+                            var myDate = new Date();
+                            var myDay  = myDate.getDay();
+                            var weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                            document.write("Today is :" +weekday[myDay]);
+                            document.write("<br/>");
+                            
+                            var hours = myDate.getHours();
+                            var ampm = hours >=12 ? 'PM':'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours: 12;
+                            var minutes = myDate.getMinutes();
+                            minutes = minutes < 10 ? '0' + minutes : minutes;
+                            var myTime = hours + " " + ampm + " : " + minutes + " : " + myDate.getMilliseconds();
+                            document.write("\tCurrent Time is : " + myTime);
+                        </script>
+                        
+                     </body>                     
+                  <html>
+                mode: '000644'         
+           services:
+            sysvinit:
+              httpd:
+                enabled: 'true'
+                ensureRunning: 'true'           
+                                 
+   #an Elastic IP for instance
+  MyEIP: 
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref MyInstance 
+      
+    # Security group for my instance   
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup 
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+         - CidrIp: 0.0.0.0/0
+           FromPort: 22
+           IpProtocol: tcp
+           ToPort: 22
+         - CidrIp: 0.0.0.0/0
+           FromPort: 80
+           IpProtocol: tcp
+           ToPort: 80
+           
+    #Samplewaitcond waiting for 1 Ec2 instance to signal within 1 minute       
+  Samplewaitcond:
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT3M
+        Count: 1
+    Type: AWS::CloudFormation::WaitCondition    
+        
