@@ -9,4 +9,15 @@ All architectural design in AWS environment.
 
 ![image](https://user-images.githubusercontent.com/31379945/120932682-67d1ad00-c714-11eb-89e7-071f9f2a66ce.png)
 
-This repository entails all Infrastructure as Code(using Cloud formation) code to set up environement in AWS and provides secure, high available ,scalable and  fault tolerent architectural diagrams.
+
+3) Connect RDS from private EC2 at private subnet. Private EC2 is to be connected from EC2   located at public subnet in user defined Virtual Private Cloud.
+
+![image](https://user-images.githubusercontent.com/31379945/120934078-86d33d80-c71a-11eb-8552-dbb270229c13.png)
+
+4)Return date and time from web application built on T2 Micro EC2 instance in Auto Scaling Group. It is to accessed by Application Load Balancer, which is in-turn to be accessed by Route 53.
+
+![image](https://user-images.githubusercontent.com/31379945/120934115-a702fc80-c71a-11eb-9113-0375f55011d1.png)
+
+5) Upload an image to S3 and get notification to your mobile and email ID using Lambda, SNS topic.
+
+![image](https://user-images.githubusercontent.com/31379945/120934174-e3365d00-c71a-11eb-8c2f-7ffb39ff557e.png)
