@@ -31,7 +31,7 @@ All architectural design in AWS environment. Detailed step by step processes are
 
 ![image](https://user-images.githubusercontent.com/31379945/147042311-a4682c1a-433f-4a51-bcae-57954db3f2dc.png)
 
-9) Designed framework to enable Federated user accessing private S3 bucket using Google IDP and Cognito Identity pool
+9) Designed framework to enable Federated users accessing private S3 bucket using Google IDP and Cognito Identity pool
 
 ![image](https://user-images.githubusercontent.com/31379945/147042478-6e2dca66-baaf-4c06-9d95-c17cd19accb4.png)
 
