@@ -1,11 +1,11 @@
 # AWS-Work
-All architectural design in AWS environment. Detailed step by step processes are mentioned in repo.
+All architectural design in AWS environment. Detailed step by step processes are mentioned in repository.
 Note:  Architecural diagrams are created using browser based tool diagrams.net 
 
 1) Build Highly available, Scalable, Self healing architecture to deploy WordPress application
 ![Scalable_Resilient_architecture_deployed WordPress application](https://user-images.githubusercontent.com/31379945/147038489-eccf6759-6b1e-4ab0-b698-54960486aa51.jpg)
 
-2) Build an architecture to simulate on premise environment in AWS , hosted Maria DB in EC2 instance(simulated on premise) . Used Database Migration Service(DMS) to migrate Full copy of database for WordPress application to AWS Cloud MariaDB RDS DB instance using replica instance
+2) Build an architecture to simulate on premise environment in AWS , hosted Maria DB in EC2 instance(simulated on premise) . Used Database Migration Service(DMS) to migrate Full copy of database for WordPress application to AWS Cloud MariaDB RDS DB instance using DMS Replica instance
 
 ![image](https://user-images.githubusercontent.com/31379945/147038929-acf7fa85-21b2-4fbe-b966-e9341bf6775a.png)
 
