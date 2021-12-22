@@ -1,5 +1,7 @@
 # AWS-Work
 All architectural design in AWS environment. Detailed step by step processes are mentioned in repo.
+Note:  Architecural diagrams are created using browser based tool diagrams.net 
+
 1) Build Highly available, Scalable, Self healing architecture to deploy WordPress application
 ![Scalable_Resilient_architecture_deployed WordPress application](https://user-images.githubusercontent.com/31379945/147038489-eccf6759-6b1e-4ab0-b698-54960486aa51.jpg)
 
